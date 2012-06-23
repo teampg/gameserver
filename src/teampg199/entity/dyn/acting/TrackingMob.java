@@ -7,10 +7,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
-import com.google.common.base.Predicate;
-
 import teampg.grid2d.GridInterface.Entry;
-import teampg.grid2d.point.AbsPos;
+import teampg.grid2d.point.BoundedPos;
 import teampg.grid2d.point.Pos2D;
 import teampg.grid2d.point.RelPos;
 import teampg199.entity.Entity;
@@ -22,6 +20,8 @@ import teampg199.world.board.Board;
 import teampg199.world.board.Board.BoardDistanceComparator;
 import teampg199.world.pathfinding.AStarPather;
 import teampg199.world.pathfinding.AStarPather.StarPath;
+
+import com.google.common.base.Predicate;
 
 public class TrackingMob extends ActingEntity {
 	private enum State {
@@ -110,7 +110,7 @@ public class TrackingMob extends ActingEntity {
 				break;
 			}
 
-			AbsPos targetMove = tripPlan.pop();
+			BoundedPos targetMove = tripPlan.pop();
 
 			doMove(targetMove);
 			break;
@@ -119,10 +119,10 @@ public class TrackingMob extends ActingEntity {
 		}
 	}
 
-	private void doMove(AbsPos target) {
+	private void doMove(BoundedPos target) {
 		assert status == State.TRACKING : status;
 		Board map = getPage().getMap();
-		AbsPos myPos = map.getPos(this);
+		BoundedPos myPos = map.getPos(this);
 
 		// try to do move
 		boolean moveSucceeded = moveIfEmpty(Pos2D.absToRel(myPos, target));
@@ -135,7 +135,7 @@ public class TrackingMob extends ActingEntity {
 
 	private DynamicEntity findTarget() {
 		Board map = getPage().getMap();
-		AbsPos myPos = map.getPos(this);
+		BoundedPos myPos = map.getPos(this);
 
 		// find and sort by proximity all players within AGRO_RANGE
 		List<Entry<Entity>> sortedPlayers;

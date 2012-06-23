@@ -104,12 +104,12 @@ public class Translator {
 		case "move":
 			 int xVector = paramsNode.get("x_vector").asInt();
 			 int yVector = paramsNode.get("y_vector").asInt();
-			 action = new MoveCmd(new RelPos(xVector, yVector));
+			 action = new MoveCmd(RelPos.of(xVector, yVector));
 			 break;
 		case "shoot":
 			 xVector = paramsNode.get("x_vector").asInt();
 			 yVector = paramsNode.get("y_vector").asInt();
-			 action = new ShootCmd(new RelPos(xVector, yVector));
+			 action = new ShootCmd(RelPos.of(xVector, yVector));
 			 break;
 		default:
 			throw new MalformedPizzaProtocolException("type not recognized",
@@ -148,8 +148,8 @@ public class Translator {
 			for (BoardChange ch : boardChanges) {
 				ObjectNode chRoot = nodeBoard.addObject();
 
-				chRoot.put("x", ch.getPos().x());
-				chRoot.put("y", ch.getPos().y());
+				chRoot.put("x", ch.getPos().x);
+				chRoot.put("y", ch.getPos().y);
 
 				Entity ent = ch.getNewOccupant();
 				chRoot.put("entity_id", entityIDs.getID(ent));

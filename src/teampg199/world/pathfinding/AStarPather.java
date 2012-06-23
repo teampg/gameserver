@@ -9,7 +9,7 @@ import java.util.PriorityQueue;
 import java.util.Stack;
 
 import teampg.grid2d.GridInterface.Entry;
-import teampg.grid2d.point.AbsPos;
+import teampg.grid2d.point.BoundedPos;
 import teampg199.entity.Entity;
 import teampg199.world.board.Board;
 import teampg199.world.pathfinding.NodeMap.Node;
@@ -54,7 +54,7 @@ public abstract class AStarPather {
 
 		while (!openSet.isEmpty()) {
 			Node current = openSet.poll();
-			AbsPos currentPos = current.getPos();
+			BoundedPos currentPos = current.getPos();
 
 			// found path leading to goal
 			if (currentPos.equals(map.goal)) {
@@ -126,16 +126,16 @@ public abstract class AStarPather {
 		return bestDiscoveredPath;
 	}
 
-	public static class StarPath implements Iterable<AbsPos>, Comparable<StarPath> {
+	public static class StarPath implements Iterable<BoundedPos>, Comparable<StarPath> {
 		private static final double INCOMPLETENESS_COST_PER_SQUARE = 10D;
 
 		private final Stack<Node> points;
-		private final AbsPos goal;
+		private final BoundedPos goal;
 		private final Node endOfTheLine;
 
 		private final int distanceShortOfGoal;
 
-		StarPath(Node endOfTheLine, AbsPos goalPos) {
+		StarPath(Node endOfTheLine, BoundedPos goalPos) {
 			points = getPath(endOfTheLine);
 			this.endOfTheLine = endOfTheLine;
 			goal = goalPos;
@@ -156,7 +156,7 @@ public abstract class AStarPather {
 			return nodesInPath;
 		}
 
-		public AbsPos getGoal() {
+		public BoundedPos getGoal() {
 			return goal;
 		}
 
@@ -164,15 +164,15 @@ public abstract class AStarPather {
 			return points.isEmpty();
 		}
 
-		public AbsPos pop() {
+		public BoundedPos pop() {
 			return points.pop().getPos();
 		}
 
-		public AbsPos peek() {
+		public BoundedPos peek() {
 			return points.peek().getPos();
 		}
 
-		public AbsPos get(int at) {
+		public BoundedPos get(int at) {
 			return points.get(at).getPos();
 		}
 
@@ -180,7 +180,7 @@ public abstract class AStarPather {
 			return points.size();
 		}
 
-		public AbsPos getEndPoint() {
+		public BoundedPos getEndPoint() {
 			return endOfTheLine.getPos();
 		}
 
@@ -196,16 +196,16 @@ public abstract class AStarPather {
 		}
 
 		@Override
-		public Iterator<AbsPos> iterator() {
+		public Iterator<BoundedPos> iterator() {
 			final Iterator<Node> iter = points.iterator();
-			return new Iterator<AbsPos>() {
+			return new Iterator<BoundedPos>() {
 				@Override
 				public boolean hasNext() {
 					return iter.hasNext();
 				}
 
 				@Override
-				public AbsPos next() {
+				public BoundedPos next() {
 					return iter.next().getPos();
 				}
 

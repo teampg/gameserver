@@ -1,5 +1,6 @@
 package teampg199.world.board;
 
+import teampg.grid2d.point.BoundedPos;
 import teampg199.changeout.Change;
 import teampg199.entity.Entity;
 import teampg199.entity.stat.Empty;
@@ -12,16 +13,16 @@ import com.google.common.base.Objects;
  * @author JWill <Jackson.Williams at camosun.ca>
  */
 public final class BoardChange extends Change<Board> {
-	private final AbsPos pos;
+	private final BoundedPos pos;
 	private final Entity newOccupant;
 
-	public BoardChange(Board b, AbsPos pos, Entity newOccupant) {
+	public BoardChange(Board b, BoundedPos pos, Entity newOccupant) {
 		super(b);
 		this.pos = pos;
 		this.newOccupant = newOccupant;
 	}
 
-	public AbsPos getPos() {
+	public BoundedPos getPos() {
 		return pos;
 	}
 

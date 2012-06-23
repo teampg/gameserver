@@ -6,8 +6,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-
-import teampg.grid2d.point.AbsPos;
+import teampg.grid2d.point.BoundedPos;
 import teampg199.entity.Entity;
 import teampg199.entity.dyn.acting.DrunkMob;
 import teampg199.entity.dyn.acting.PushableBlock;
@@ -64,7 +63,7 @@ public class WorldPageLoader {
 			int x = 0;
 			while (cellScanner.hasNext()) {
 				String cellSymbol = cellScanner.next();
-				AbsPos cellPos = new AbsPos(x, y);
+				BoundedPos cellPos = new BoundedPos(x, y);
 
 				Entity fromCell = getEntityForSymbol(cellSymbol, ret);
 				if (fromCell instanceof Empty) {

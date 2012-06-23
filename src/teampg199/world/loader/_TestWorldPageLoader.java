@@ -11,7 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 
-import teampg.grid2d.point.AbsPos;
+import teampg.grid2d.point.BoundedPos;
 import teampg199.entity.Entity;
 import teampg199.entity.dyn.acting.PushableBlock;
 import teampg199.entity.dyn.acting.TrackingMob;
@@ -40,21 +40,21 @@ public class _TestWorldPageLoader {
 		WorldPage loaded = WorldPageLoader.load(validMapString);
 		Board map = loaded.getMap();
 
-		Entity entAt00 = map.get(new AbsPos(0,0));
+		Entity entAt00 = map.get(new BoundedPos(0,0));
 		assertTrue(entAt00 instanceof Empty);
-		assertTrue(map.get(new AbsPos(1,0)) instanceof PlayerSpawnShrine);
-		assertTrue(map.get(new AbsPos(2,0)) instanceof Empty);
-		assertTrue(map.get(new AbsPos(3,0)) instanceof Empty);
+		assertTrue(map.get(new BoundedPos(1,0)) instanceof PlayerSpawnShrine);
+		assertTrue(map.get(new BoundedPos(2,0)) instanceof Empty);
+		assertTrue(map.get(new BoundedPos(3,0)) instanceof Empty);
 
-		assertTrue(map.get(new AbsPos(0,1)) instanceof Empty);
-		assertTrue(map.get(new AbsPos(1,1)) instanceof Wall);
-		assertTrue(map.get(new AbsPos(2,1)) instanceof Wall);
-		assertTrue(map.get(new AbsPos(3,1)) instanceof Wall);
+		assertTrue(map.get(new BoundedPos(0,1)) instanceof Empty);
+		assertTrue(map.get(new BoundedPos(1,1)) instanceof Wall);
+		assertTrue(map.get(new BoundedPos(2,1)) instanceof Wall);
+		assertTrue(map.get(new BoundedPos(3,1)) instanceof Wall);
 
-		assertTrue(map.get(new AbsPos(0,2)) instanceof TrackingMob);
-		assertTrue(map.get(new AbsPos(1,2)) instanceof Empty);
-		assertTrue(map.get(new AbsPos(2,2)) instanceof Empty);
-		assertTrue(map.get(new AbsPos(3,2)) instanceof PushableBlock);
+		assertTrue(map.get(new BoundedPos(0,2)) instanceof TrackingMob);
+		assertTrue(map.get(new BoundedPos(1,2)) instanceof Empty);
+		assertTrue(map.get(new BoundedPos(2,2)) instanceof Empty);
+		assertTrue(map.get(new BoundedPos(3,2)) instanceof PushableBlock);
 	}
 
 	@Test
@@ -62,21 +62,21 @@ public class _TestWorldPageLoader {
 		WorldPage loaded = WorldPageLoader.load(new File("testMap"));
 		Board map = loaded.getMap();
 
-		Entity entAt00 = map.get(new AbsPos(0,0));
+		Entity entAt00 = map.get(new BoundedPos(0,0));
 		assertTrue(entAt00 instanceof Empty);
-		assertTrue(map.get(new AbsPos(1,0)) instanceof PlayerSpawnShrine);
-		assertTrue(map.get(new AbsPos(2,0)) instanceof Empty);
-		assertTrue(map.get(new AbsPos(3,0)) instanceof Empty);
+		assertTrue(map.get(new BoundedPos(1,0)) instanceof PlayerSpawnShrine);
+		assertTrue(map.get(new BoundedPos(2,0)) instanceof Empty);
+		assertTrue(map.get(new BoundedPos(3,0)) instanceof Empty);
 
-		assertTrue(map.get(new AbsPos(0,1)) instanceof Empty);
-		assertTrue(map.get(new AbsPos(1,1)) instanceof Wall);
-		assertTrue(map.get(new AbsPos(2,1)) instanceof Wall);
-		assertTrue(map.get(new AbsPos(3,1)) instanceof Wall);
+		assertTrue(map.get(new BoundedPos(0,1)) instanceof Empty);
+		assertTrue(map.get(new BoundedPos(1,1)) instanceof Wall);
+		assertTrue(map.get(new BoundedPos(2,1)) instanceof Wall);
+		assertTrue(map.get(new BoundedPos(3,1)) instanceof Wall);
 
-		assertTrue(map.get(new AbsPos(0,2)) instanceof TrackingMob);
-		assertTrue(map.get(new AbsPos(1,2)) instanceof Empty);
-		assertTrue(map.get(new AbsPos(2,2)) instanceof Empty);
-		assertTrue(map.get(new AbsPos(3,2)) instanceof PushableBlock);
+		assertTrue(map.get(new BoundedPos(0,2)) instanceof TrackingMob);
+		assertTrue(map.get(new BoundedPos(1,2)) instanceof Empty);
+		assertTrue(map.get(new BoundedPos(2,2)) instanceof Empty);
+		assertTrue(map.get(new BoundedPos(3,2)) instanceof PushableBlock);
 	}
 
 	@Test

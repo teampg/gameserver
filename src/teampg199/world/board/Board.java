@@ -8,7 +8,7 @@ import java.util.Set;
 import com.google.common.base.Predicate;
 
 import teampg.grid2d.GridInterface.Entry;
-import teampg.grid2d.point.AbsPos;
+import teampg.grid2d.point.BoundedPos;
 import teampg.grid2d.point.Pos2D;
 import teampg.grid2d.point.RelPos;
 import teampg.grid2d.point.Pos2D.DistanceComparator;
@@ -31,16 +31,16 @@ public abstract class Board {
 	 *            {@link RelPos} offset from DynamicEntity near.
 	 * @return Entity found at (near's position) + (offset)
 	 */
-	public abstract Entity get(AbsPos at);
+	public abstract Entity get(BoundedPos at);
 	public abstract Entry<Entity> get(DynamicEntity at);
-	public abstract void set(AbsPos at, Entity newValue);
+	public abstract void set(BoundedPos at, Entity newValue);
 
 	public abstract Entity get(DynamicEntity nearEnt, RelPos offset);
 	public abstract void set(DynamicEntity nearEnt, RelPos offset,
 			Entity newValue);
 
-	public abstract Set<AbsPos> getPointsNear(AbsPos near, int radius); //TODO this should be getDiamond
-	public abstract Set<AbsPos> getRing(AbsPos near, int radius); //TODO this should be getSquare
+	public abstract Set<BoundedPos> getPointsNear(BoundedPos near, int radius); //TODO this should be getDiamond
+	public abstract Set<BoundedPos> getRing(BoundedPos near, int radius); //TODO this should be getSquare
 
 	public abstract List<Entry<Entity>> findMatchingEntities(Predicate<Entry<Entity>> matcher);
 
@@ -48,14 +48,14 @@ public abstract class Board {
 
 	public abstract BoardInfo getInfo();
 
-	public abstract boolean isInBounds(AbsPos p);
+	public abstract boolean isInBounds(BoundedPos p);
 
 	public abstract List<BoardChange> popChanges();
 
 	public static class BoardDistanceComparator implements Comparator<Entry<Entity>> {
 		DistanceComparator comparer;
 
-		public BoardDistanceComparator(AbsPos near) {
+		public BoardDistanceComparator(BoundedPos near) {
 			comparer = new Pos2D.DistanceComparator(near);
 		}
 
@@ -65,6 +65,6 @@ public abstract class Board {
 		}
 	}
 
-	public abstract AbsPos getPos(DynamicEntity toFindPosOf);
+	public abstract BoundedPos getPos(DynamicEntity toFindPosOf);
 	public abstract boolean contains(Entity ent);
 }

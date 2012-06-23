@@ -5,9 +5,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.google.common.collect.ImmutableList;
-
-import teampg.grid2d.point.AbsPos;
+import teampg.grid2d.point.BoundedPos;
 import teampg199.entity.dyn.DynamicEntity;
 import teampg199.entity.dyn.acting.ActingEntity;
 import teampg199.entity.dyn.acting.player.JoinCmd;
@@ -15,6 +13,8 @@ import teampg199.entity.dyn.acting.player.JoinCmd.JoinUpdate;
 import teampg199.entity.dyn.acting.player.Player;
 import teampg199.playerconnection.PlayerConnection;
 import teampg199.world.WorldPage;
+
+import com.google.common.collect.ImmutableList;
 
 public class PlayerSpawnShrine extends ActingEntity {
 	private static final int SPAWN_RADIUS = 5;
@@ -35,7 +35,7 @@ public class PlayerSpawnShrine extends ActingEntity {
 		}
 
 		// get a spawn point
-		AbsPos spawnPoint = spawns.getSpawnPoint();
+		BoundedPos spawnPoint = spawns.getSpawnPoint();
 
 		// get a name
 		String assignedName = names.getSimilarValidName(joinCmd.getName());

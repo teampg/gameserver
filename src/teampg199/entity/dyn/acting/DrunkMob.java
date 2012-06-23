@@ -43,7 +43,7 @@ public class DrunkMob extends ActingEntity {
 			return;
 		}
 
-		RelPos wantsToMove = new RelPos(gen.nextInt(3) - 1, gen.nextInt(3) - 1);
+		RelPos wantsToMove = RelPos.of(gen.nextInt(3) - 1, gen.nextInt(3) - 1);
 
 		// try to move
 		if (moveIfEmpty(wantsToMove)) {

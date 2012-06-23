@@ -1,6 +1,6 @@
 package teampg199.entity.dyn.acting.spawner;
 
-import teampg.grid2d.point.AbsPos;
+import teampg.grid2d.point.BoundedPos;
 import teampg199.entity.dyn.acting.ActingEntity;
 import teampg199.entity.dyn.acting.TrackingMob;
 import teampg199.world.WorldPage;
@@ -25,7 +25,7 @@ public class EnemySpawner extends ActingEntity {
 		}
 
 		// get a spawn point
-		AbsPos spawnPoint = spawns.getSpawnPoint();
+		BoundedPos spawnPoint = spawns.getSpawnPoint();
 
 		// make enemy entity
 		TrackingMob mob = new TrackingMob(getPage());

@@ -8,21 +8,21 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Set;
 
-import com.google.common.base.Predicate;
-
-import teampg.grid2d.RectGrid;
 import teampg.grid2d.GridInterface.Entry;
-import teampg.grid2d.point.AbsPos;
+import teampg.grid2d.RectGrid;
+import teampg.grid2d.point.BoundedPos;
 import teampg.grid2d.point.Pos2D;
 import teampg.grid2d.point.RelPos;
 import teampg199.entity.Entity;
 import teampg199.entity.dyn.DynamicEntity;
 import teampg199.entity.stat.StaticEntity;
 
+import com.google.common.base.Predicate;
+
 public class BoardImpl extends Board {
 	private final BoardInfo info;
 	private final RectGrid<Entity> grid;
-	private final Hashtable<DynamicEntity, AbsPos> dynEntPosIndex;
+	private final Hashtable<DynamicEntity, BoundedPos> dynEntPosIndex;
 	private List<BoardChange> turnChanges;
 
 	public BoardImpl(Dimension size, StaticEntity toFill) {
@@ -36,13 +36,13 @@ public class BoardImpl extends Board {
 		// fill without adding changes
 		for(int x = 0; x < size.width; x++){
 			for(int y = 0; y < size.height; y++){
-				grid.set(new AbsPos(x, y), toFill);
+				grid.set(BoundedPos.of(x, y, size), toFill);
 			}
 		}
 	}
 
 	@Override
-	public Entity get(AbsPos target) {
+	public Entity get(BoundedPos target) {
 		if (!isInBounds(target)) {
 			return null; //TODO change to wall or something
 		}
@@ -56,7 +56,7 @@ public class BoardImpl extends Board {
 	}
 
 	@Override
-	public void set(AbsPos target, Entity newOccupant) {
+	public void set(BoundedPos target, Entity newOccupant) {
 		// remove overwritten entity from index
 		Entity entAtTarget = grid.get(target);
 		if (entAtTarget instanceof DynamicEntity) {
@@ -76,8 +76,8 @@ public class BoardImpl extends Board {
 
 	@Override
 	public Entity get(DynamicEntity nearEnt, RelPos offset) {
-		AbsPos from = dynEntPosIndex.get(nearEnt);
-		AbsPos target = Pos2D.offset(from, offset);
+		BoundedPos from = dynEntPosIndex.get(nearEnt);
+		BoundedPos target = Pos2D.offset(from, offset);
 
 		if (!isInBounds(target)) {
 			return null;
@@ -89,8 +89,8 @@ public class BoardImpl extends Board {
 
 	@Override
 	public void set(DynamicEntity nearEnt, RelPos offset, Entity newOccupant) {
-		AbsPos from = dynEntPosIndex.get(nearEnt);
-		AbsPos target = Pos2D.offset(from, offset);
+		BoundedPos from = dynEntPosIndex.get(nearEnt);
+		BoundedPos target = Pos2D.offset(from, offset);
 
 		this.set(target, newOccupant);
 	}
@@ -113,8 +113,8 @@ public class BoardImpl extends Board {
 	/**
 	 * Includes near.
 	 */
-	public Set<AbsPos> getPointsNear(AbsPos near, int radius) {
-		Set<AbsPos> pointsNear = new HashSet<>();
+	public Set<BoundedPos> getPointsNear(BoundedPos near, int radius) {
+		Set<BoundedPos> pointsNear = new HashSet<>();
 
 		int xi = near.x();
 		int yi = near.y();
@@ -127,7 +127,7 @@ public class BoardImpl extends Board {
 
 		for (int x = minXToTest; x <= maxXToTest; x++) {
 			for (int y = minYToTest; y <= maxYToTest; y++) {
-				AbsPos pos = new AbsPos(x, y);
+				BoundedPos pos = new BoundedPos(x, y);
 
 				// don't consider points that are out of bounds
 				if (!isInBounds(pos)) {
@@ -147,19 +147,19 @@ public class BoardImpl extends Board {
 	}
 
 	@Override
-	public Set<AbsPos> getRing(AbsPos from, int radius) {
-		return (Set<AbsPos>) Pos2D.removeOutOfRectBounds(from.getRing(radius), 0, info.getSize().width - 1, info.getSize().height - 1, 0);
+	public Set<BoundedPos> getRing(BoundedPos from, int radius) {
+		return (Set<BoundedPos>) Pos2D.removeOutOfRectBounds(from.getRing(radius), 0, info.getSize().width - 1, info.getSize().height - 1, 0);
 	}
 
 	@Override
-	public boolean isInBounds(AbsPos p) {
+	public boolean isInBounds(BoundedPos p) {
 		return grid.isInBounds(p);
 	}
 
 	@Override
 	public void swap(DynamicEntity a, RelPos bOffsetFromA) {
-		AbsPos aPos = dynEntPosIndex.get(a);
-		AbsPos bPos = Pos2D.offset(aPos, bOffsetFromA);
+		BoundedPos aPos = dynEntPosIndex.get(a);
+		BoundedPos bPos = Pos2D.offset(aPos, bOffsetFromA);
 		Entity b = grid.get(bPos);
 
 		// update index for new positions
@@ -193,7 +193,7 @@ public class BoardImpl extends Board {
 	}
 
 	@Override
-	public AbsPos getPos(DynamicEntity toFind) {
+	public BoundedPos getPos(DynamicEntity toFind) {
 		return grid.get(toFind).getPosition();
 	}
 

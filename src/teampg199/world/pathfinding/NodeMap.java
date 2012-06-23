@@ -7,7 +7,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import teampg.grid2d.point.AbsPos;
+import teampg.grid2d.point.BoundedPos;
 import teampg199.entity.Entity;
 import teampg199.entity.stat.Empty;
 import teampg199.world.board.Board;
@@ -16,13 +16,13 @@ class NodeMap {
 	static final int BASE_COST = 1;
 
 	private final Board realMap;
-	private final Map<AbsPos, Node> examinedNodes;
+	private final Map<BoundedPos, Node> examinedNodes;
 	private final Node start;
 
 	// final immutable datatype; safe to make public
-	public final AbsPos goal;
+	public final BoundedPos goal;
 
-	NodeMap(Board realMap, AbsPos goal, AbsPos startPos) {
+	NodeMap(Board realMap, BoundedPos goal, BoundedPos startPos) {
 		this.goal = goal;
 
 		this.realMap = realMap;
@@ -35,13 +35,13 @@ class NodeMap {
 		return start;
 	}
 
-	public Node getNode(AbsPos at) {
+	public Node getNode(BoundedPos at) {
 		assert examinedNodes.containsKey(at);
 
 		return examinedNodes.get(at);
 	}
 
-	public Integer getCost(AbsPos at) {
+	public Integer getCost(BoundedPos at) {
 		Entity entAtPos = realMap.get(at);
 
 		if (!(entAtPos instanceof Empty)) {
@@ -51,11 +51,11 @@ class NodeMap {
 		return BASE_COST;
 	}
 
-	public int getEstimatedCost(AbsPos from, AbsPos to) {
+	public int getEstimatedCost(BoundedPos from, BoundedPos to) {
 		return from.distance(to) * BASE_COST;
 	}
 
-	public boolean hasNode(AbsPos position) {
+	public boolean hasNode(BoundedPos position) {
 		return examinedNodes.containsKey(position);
 	}
 
@@ -63,13 +63,13 @@ class NodeMap {
 	 * Fetches directly adjacent nodes. Creates nodes if not previously
 	 * existent. Ignores un-walkable positions.
 	 */
-	public Node[] getNeighbours(AbsPos near) {
+	public Node[] getNeighbours(BoundedPos near) {
 		// only move diagonal
-		Set<AbsPos> nearPoints = realMap.getPointsNear(near, 1);
+		Set<BoundedPos> nearPoints = realMap.getPointsNear(near, 1);
 
 		// remove non-walkable points
-		for (Iterator<AbsPos> iter = nearPoints.iterator(); iter.hasNext();) {
-			AbsPos p = iter.next();
+		for (Iterator<BoundedPos> iter = nearPoints.iterator(); iter.hasNext();) {
+			BoundedPos p = iter.next();
 
 			if (getCost(p) == null) {
 				iter.remove();
@@ -81,7 +81,7 @@ class NodeMap {
 		// if not already created
 		{
 			int i = 0;
-			for (AbsPos p : nearPoints) {
+			for (BoundedPos p : nearPoints) {
 				// create node if not already made
 				if (!examinedNodes.containsKey(p)) {
 					neighbours[i] = new Node(p);
@@ -100,16 +100,16 @@ class NodeMap {
 	/**
 	 * Fetches all nodes in a diamond. Does not create new nodes.
 	 */
-	public Node[] findProximateNodes(AbsPos near, int radius) {
+	public Node[] findProximateNodes(BoundedPos near, int radius) {
 		if (radius <= 0) {
 			throw new IllegalArgumentException("Radius must be greater than 0");
 		}
 
-		Set<AbsPos> diamondPoints = realMap.getPointsNear(near, radius);
+		Set<BoundedPos> diamondPoints = realMap.getPointsNear(near, radius);
 
 		// only get existing nodes
 		ArrayList<Node> diamondNodes = new ArrayList<>();
-		for (AbsPos p : diamondPoints) {
+		for (BoundedPos p : diamondPoints) {
 			if (hasNode(p)) {
 				diamondNodes.add(getNode(p));
 			}
@@ -123,14 +123,14 @@ class NodeMap {
 	}
 
 	class Node implements Comparable<Node> {
-		private final AbsPos pos;
+		private final BoundedPos pos;
 
 		private int costFromStart;
 		private int estTotalCost;
 
 		private Node parent;
 
-		private Node(AbsPos position) {
+		private Node(BoundedPos position) {
 			assert(!examinedNodes.containsKey(position));
 
 			pos = position;
@@ -145,7 +145,7 @@ class NodeMap {
 			examinedNodes.put(pos, this);
 		}
 
-		public AbsPos getPos() {
+		public BoundedPos getPos() {
 			return pos;
 		}
 

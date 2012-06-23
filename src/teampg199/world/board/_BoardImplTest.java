@@ -1,7 +1,8 @@
 package teampg199.world.board;
 
-import static org.junit.Assert.*;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.awt.Dimension;
 import java.util.Set;
@@ -9,8 +10,7 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-
-import teampg.grid2d.point.AbsPos;
+import teampg.grid2d.point.BoundedPos;
 import teampg199.entity.stat.Empty;
 import teampg199.entity.stat.EntityManager;
 
@@ -25,7 +25,7 @@ public class _BoardImplTest {
 	}
 
 	@Test
-	public void testSetAbsPosEntity() {
+	public void testSetBoundedPosEntity() {
 		fail("Not yet implemented");
 	}
 
@@ -37,8 +37,8 @@ public class _BoardImplTest {
 
 	@Test
 	public void testGetPointsNearIncludesNear() {
-		AbsPos near = new AbsPos(2,2);
-		Set<AbsPos> pointsNear = map.getPointsNear(near, 0);
+		BoundedPos near = new BoundedPos(2,2);
+		Set<BoundedPos> pointsNear = map.getPointsNear(near, 0);
 
 		assertEquals(1, pointsNear.size());
 		assertTrue(pointsNear.contains(near));
