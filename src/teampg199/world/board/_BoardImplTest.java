@@ -37,7 +37,7 @@ public class _BoardImplTest {
 
 	@Test
 	public void testGetPointsNearIncludesNear() {
-		BoundedPos near = new BoundedPos(2,2);
+		BoundedPos near = BoundedPos.of(2,2,map.getInfo().getSize());
 		Set<BoundedPos> pointsNear = map.getPointsNear(near, 0);
 
 		assertEquals(1, pointsNear.size());

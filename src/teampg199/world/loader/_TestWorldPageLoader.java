@@ -39,44 +39,46 @@ public class _TestWorldPageLoader {
 	public void testLoadFromString() {
 		WorldPage loaded = WorldPageLoader.load(validMapString);
 		Board map = loaded.getMap();
-
-		Entity entAt00 = map.get(new BoundedPos(0,0));
+		Dimension mapSize = map.getInfo().getSize();
+		
+		Entity entAt00 = map.get(BoundedPos.of(0,0,map.getInfo().getSize()));
 		assertTrue(entAt00 instanceof Empty);
-		assertTrue(map.get(new BoundedPos(1,0)) instanceof PlayerSpawnShrine);
-		assertTrue(map.get(new BoundedPos(2,0)) instanceof Empty);
-		assertTrue(map.get(new BoundedPos(3,0)) instanceof Empty);
+		assertTrue(map.get(BoundedPos.of(1,0,mapSize)) instanceof PlayerSpawnShrine);
+		assertTrue(map.get(BoundedPos.of(2,0,mapSize)) instanceof Empty);
+		assertTrue(map.get(BoundedPos.of(3,0,mapSize)) instanceof Empty);
 
-		assertTrue(map.get(new BoundedPos(0,1)) instanceof Empty);
-		assertTrue(map.get(new BoundedPos(1,1)) instanceof Wall);
-		assertTrue(map.get(new BoundedPos(2,1)) instanceof Wall);
-		assertTrue(map.get(new BoundedPos(3,1)) instanceof Wall);
+		assertTrue(map.get(BoundedPos.of(0,1,mapSize)) instanceof Empty);
+		assertTrue(map.get(BoundedPos.of(1,1,mapSize)) instanceof Wall);
+		assertTrue(map.get(BoundedPos.of(2,1,mapSize)) instanceof Wall);
+		assertTrue(map.get(BoundedPos.of(3,1,mapSize)) instanceof Wall);
 
-		assertTrue(map.get(new BoundedPos(0,2)) instanceof TrackingMob);
-		assertTrue(map.get(new BoundedPos(1,2)) instanceof Empty);
-		assertTrue(map.get(new BoundedPos(2,2)) instanceof Empty);
-		assertTrue(map.get(new BoundedPos(3,2)) instanceof PushableBlock);
+		assertTrue(map.get(BoundedPos.of(0,2,mapSize)) instanceof TrackingMob);
+		assertTrue(map.get(BoundedPos.of(1,2,mapSize)) instanceof Empty);
+		assertTrue(map.get(BoundedPos.of(2,2,mapSize)) instanceof Empty);
+		assertTrue(map.get(BoundedPos.of(3,2,mapSize)) instanceof PushableBlock);
 	}
 
 	@Test
 	public void testLoadFromFile() throws FileNotFoundException {
 		WorldPage loaded = WorldPageLoader.load(new File("testMap"));
 		Board map = loaded.getMap();
-
-		Entity entAt00 = map.get(new BoundedPos(0,0));
+		Dimension mapSize = map.getInfo().getSize();
+		
+		Entity entAt00 = map.get(BoundedPos.of(0,0,mapSize));
 		assertTrue(entAt00 instanceof Empty);
-		assertTrue(map.get(new BoundedPos(1,0)) instanceof PlayerSpawnShrine);
-		assertTrue(map.get(new BoundedPos(2,0)) instanceof Empty);
-		assertTrue(map.get(new BoundedPos(3,0)) instanceof Empty);
+		assertTrue(map.get(BoundedPos.of(1,0,mapSize)) instanceof PlayerSpawnShrine);
+		assertTrue(map.get(BoundedPos.of(2,0,mapSize)) instanceof Empty);
+		assertTrue(map.get(BoundedPos.of(3,0,mapSize)) instanceof Empty);
 
-		assertTrue(map.get(new BoundedPos(0,1)) instanceof Empty);
-		assertTrue(map.get(new BoundedPos(1,1)) instanceof Wall);
-		assertTrue(map.get(new BoundedPos(2,1)) instanceof Wall);
-		assertTrue(map.get(new BoundedPos(3,1)) instanceof Wall);
+		assertTrue(map.get(BoundedPos.of(0,1,mapSize)) instanceof Empty);
+		assertTrue(map.get(BoundedPos.of(1,1,mapSize)) instanceof Wall);
+		assertTrue(map.get(BoundedPos.of(2,1,mapSize)) instanceof Wall);
+		assertTrue(map.get(BoundedPos.of(3,1,mapSize)) instanceof Wall);
 
-		assertTrue(map.get(new BoundedPos(0,2)) instanceof TrackingMob);
-		assertTrue(map.get(new BoundedPos(1,2)) instanceof Empty);
-		assertTrue(map.get(new BoundedPos(2,2)) instanceof Empty);
-		assertTrue(map.get(new BoundedPos(3,2)) instanceof PushableBlock);
+		assertTrue(map.get(BoundedPos.of(0,2,mapSize)) instanceof TrackingMob);
+		assertTrue(map.get(BoundedPos.of(1,2,mapSize)) instanceof Empty);
+		assertTrue(map.get(BoundedPos.of(2,2,mapSize)) instanceof Empty);
+		assertTrue(map.get(BoundedPos.of(3,2,mapSize)) instanceof PushableBlock);
 	}
 
 	@Test

@@ -2,6 +2,8 @@ package teampg199.world.pathfinding;
 
 import static org.junit.Assert.*;
 
+import java.awt.Dimension;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,6 +16,7 @@ import teampg199.world.loader.WorldPageLoader;
 public class _NodeMapTest {
 	Board map;
 	NodeMap nodeMap;
+	Dimension size;
 
 	@Before
 	public void setUp() throws Exception {
@@ -24,7 +27,9 @@ public class _NodeMapTest {
 		WorldPage page = WorldPageLoader.load(testMapString);
 
 		map = page.getMap();
-		nodeMap = new NodeMap(map, new BoundedPos(2,0), new BoundedPos(1,1));
+		size = map.getInfo().getSize();
+		
+		nodeMap = new NodeMap(map, BoundedPos.of(2,0,size), BoundedPos.of(1,1,size));
 	}
 
 	@Test
@@ -39,17 +44,17 @@ public class _NodeMapTest {
 
 	@Test
 	public void testGetCost() {
-		assertEquals(nodeMap.getCost(new BoundedPos(0,0)), null);
-		assertEquals(nodeMap.getCost(new BoundedPos(1,0)), Integer.valueOf(NodeMap.BASE_COST));
-		assertEquals(nodeMap.getCost(new BoundedPos(2,0)), Integer.valueOf(NodeMap.BASE_COST));
+		assertEquals(nodeMap.getCost(BoundedPos.of(0,0,size)), null);
+		assertEquals(nodeMap.getCost(BoundedPos.of(1,0,size)), Integer.valueOf(NodeMap.BASE_COST));
+		assertEquals(nodeMap.getCost(BoundedPos.of(2,0,size)), Integer.valueOf(NodeMap.BASE_COST));
 
-		assertEquals(nodeMap.getCost(new BoundedPos(0,1)), Integer.valueOf(NodeMap.BASE_COST));
-		assertEquals(nodeMap.getCost(new BoundedPos(1,1)), null);
-		assertEquals(nodeMap.getCost(new BoundedPos(2,1)), null);
+		assertEquals(nodeMap.getCost(BoundedPos.of(0,1,size)), Integer.valueOf(NodeMap.BASE_COST));
+		assertEquals(nodeMap.getCost(BoundedPos.of(1,1,size)), null);
+		assertEquals(nodeMap.getCost(BoundedPos.of(2,1,size)), null);
 	}
 
 	@Test
 	public void testGetEstimatedCost() {
-		assertEquals(NodeMap.BASE_COST * 3, nodeMap.getEstimatedCost(new BoundedPos(0,0), new BoundedPos(2,1)));
+		assertEquals(NodeMap.BASE_COST * 3, nodeMap.getEstimatedCost(BoundedPos.of(0,0,size), BoundedPos.of(2,1,size)));
 	}
 }

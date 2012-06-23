@@ -127,7 +127,7 @@ public class BoardImpl extends Board {
 
 		for (int x = minXToTest; x <= maxXToTest; x++) {
 			for (int y = minYToTest; y <= maxYToTest; y++) {
-				BoundedPos pos = new BoundedPos(x, y);
+				BoundedPos pos = BoundedPos.of(x, y,info.getSize());
 
 				// don't consider points that are out of bounds
 				if (!isInBounds(pos)) {
