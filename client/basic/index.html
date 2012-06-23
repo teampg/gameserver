@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Basic Client</title>
+	
+	<style type="text/css">
+		#board {
+			font-family:monospace;
+		}
+		#board table {
+			border-collapse:separate;
+			table-layout:fixed;
+		}
+		#board table td {
+			width: 20px;
+			height: 20px;
+			text-align: center;
+			margin: 1px;
+			border: 1px solid #AAA;
+			background-color:#CCC;
+		}
+	</style>
+	
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script type="text/javascript" src="main.js"></script>
+</head>
+<body>
+	<div id="board"></div>
+	<input type="text" id="textToSendToServer" onkeypress="if (event.keyCode == 13) sendTextToServer(this.value)"/>
+	<br>
+	<input type="button" id="upButton" value="^" onClick="doMove(119)"/>
+	<input type="button" id="downButton" value="v" onClick="doMove(115)"/>
+	<input type="button" id="leftButton" value="<" onClick="doMove(97)"/>
+	<input type="button" id="rightButton" value=">" onClick="doMove(100)"/>
+	<input type="button" id="shootButton" value="*" onClick="doShoot()"/>
+</body>
+</html>
