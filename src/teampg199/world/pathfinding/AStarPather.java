@@ -10,6 +10,7 @@ import java.util.Stack;
 
 import teampg.grid2d.GridInterface.Entry;
 import teampg.grid2d.point.BoundedPos;
+import teampg.grid2d.point.Pos2D;
 import teampg199.entity.Entity;
 import teampg199.world.board.Board;
 import teampg199.world.pathfinding.NodeMap.Node;
@@ -94,7 +95,7 @@ public abstract class AStarPather {
 		int searchRadius;
 		{
 			searchRadius = ACCEPTABLE_PATH_INCOMPLETENESS;
-			int actualDistFromGoal = map.getStartNode().getPos().distance(map.goal);
+			int actualDistFromGoal = Pos2D.squareDistance(map.getStartNode().getPos(), map.goal);
 
 			if (actualDistFromGoal <= searchRadius) {
 				searchRadius = actualDistFromGoal - 1;
@@ -140,7 +141,7 @@ public abstract class AStarPather {
 			this.endOfTheLine = endOfTheLine;
 			goal = goalPos;
 
-			distanceShortOfGoal = endOfTheLine.getPos().distance(goalPos);
+			distanceShortOfGoal = Pos2D.squareDistance(endOfTheLine.getPos(), goalPos);
 		}
 
 		private Stack<Node> getPath(Node endOfTheLine) {

@@ -134,7 +134,7 @@ function doMove(pressedKeyCode) {
 
 	switch (pressedKeyCode) {
 	case 119: // w
-		y = 1;
+		y = -1;
 		dir = 119;
 		break;
 	case 97: // a
@@ -142,7 +142,7 @@ function doMove(pressedKeyCode) {
 		dir = 97;
 		break;
 	case 115: // s
-		y = -1;
+		y = 1;
 		dir = 115;
 		break;
 	case 100: // d

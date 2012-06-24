@@ -63,7 +63,7 @@ public class WorldPageLoader {
 			int x = 0;
 			while (cellScanner.hasNext()) {
 				String cellSymbol = cellScanner.next();
-				BoundedPos cellPos = new BoundedPos(x, y);
+				BoundedPos cellPos = BoundedPos.of(x, y, ret.getMap().getInfo().getSize());
 
 				Entity fromCell = getEntityForSymbol(cellSymbol, ret);
 				if (fromCell instanceof Empty) {

@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 import teampg.grid2d.point.BoundedPos;
+import teampg.grid2d.point.Pos2D;
 import teampg199.entity.Entity;
 import teampg199.entity.stat.Empty;
 import teampg199.world.board.Board;
@@ -52,7 +53,7 @@ class NodeMap {
 	}
 
 	public int getEstimatedCost(BoundedPos from, BoundedPos to) {
-		return from.distance(to) * BASE_COST;
+		return Pos2D.squareDistance(from, to) * BASE_COST;
 	}
 
 	public boolean hasNode(BoundedPos position) {

@@ -11,6 +11,7 @@ import java.util.Set;
 import teampg.grid2d.GridInterface.Entry;
 import teampg.grid2d.RectGrid;
 import teampg.grid2d.point.BoundedPos;
+import teampg.grid2d.point.BoundedPos.PosOutOfBoundsException;
 import teampg.grid2d.point.Pos2D;
 import teampg.grid2d.point.RelPos;
 import teampg199.entity.Entity;
@@ -116,8 +117,8 @@ public class BoardImpl extends Board {
 	public Set<BoundedPos> getPointsNear(BoundedPos near, int radius) {
 		Set<BoundedPos> pointsNear = new HashSet<>();
 
-		int xi = near.x();
-		int yi = near.y();
+		int xi = near.x;
+		int yi = near.y;
 
 		int minXToTest = (xi - radius);
 		int maxXToTest = (xi + radius);
@@ -127,15 +128,17 @@ public class BoardImpl extends Board {
 
 		for (int x = minXToTest; x <= maxXToTest; x++) {
 			for (int y = minYToTest; y <= maxYToTest; y++) {
-				BoundedPos pos = BoundedPos.of(x, y,info.getSize());
+				BoundedPos pos;
 
-				// don't consider points that are out of bounds
-				if (!isInBounds(pos)) {
+				try {
+					pos = BoundedPos.of(x, y, info.getSize());
+				} catch (PosOutOfBoundsException e) {
+					// don't consider points that are out of bounds
 					continue;
 				}
 
 				// inside radius?
-				if (near.distance(pos) > radius) {
+				if (Pos2D.squareDistance(near, pos) > radius) {
 					continue;
 				}
 
@@ -148,7 +151,7 @@ public class BoardImpl extends Board {
 
 	@Override
 	public Set<BoundedPos> getRing(BoundedPos from, int radius) {
-		return (Set<BoundedPos>) Pos2D.removeOutOfRectBounds(from.getRing(radius), 0, info.getSize().width - 1, info.getSize().height - 1, 0);
+		return (Set<BoundedPos>) Pos2D.removeOutOfRectBounds(Pos2D.getRing(from, radius), 0, info.getSize().width - 1, info.getSize().height - 1, 0);
 	}
 
 	@Override

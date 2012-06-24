@@ -9,7 +9,6 @@ import java.util.Random;
 
 import teampg.grid2d.GridInterface.Entry;
 import teampg.grid2d.point.BoundedPos;
-import teampg.grid2d.point.Pos2D;
 import teampg.grid2d.point.RelPos;
 import teampg199.entity.Entity;
 import teampg199.entity.dyn.DynamicEntity;
@@ -29,7 +28,7 @@ public class TrackingMob extends ActingEntity {
 	};
 
 	private static final Random GEN = new Random();
-	
+
 	private static final int MAX_MOVE_COOLDOWN = 40;
 	private static final int MIN_MOVE_COOLDOWN = 5;
 	private static final int AGRO_RANGE = 10;
@@ -125,7 +124,7 @@ public class TrackingMob extends ActingEntity {
 		BoundedPos myPos = map.getPos(this);
 
 		// try to do move
-		boolean moveSucceeded = moveIfEmpty(Pos2D.absToRel(myPos, target));
+		boolean moveSucceeded = moveIfEmpty(RelPos.offsetVector(myPos, target));
 
 		// if we can't move...
 		if (moveSucceeded == false) {
