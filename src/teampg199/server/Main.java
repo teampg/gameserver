@@ -25,7 +25,7 @@ public class Main {
 		final WebSocketManagerApp wsManager = new WebSocketManagerApp(buffer);
 		final HttpServer server = setupServer(wsManager);
 
-		Game game = new Game(buffer, new File("justinsmap.za"));
+		Game game = new Game(buffer, new File("maps/justinsmap.za"));
 
 		//DumbChangePrinter dumbPrinter = new DumbChangePrinter(System.out);
 		//game.attachChangeSubscriber(dumbPrinter);
