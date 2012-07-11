@@ -23,6 +23,8 @@ import teampg199.world.WorldPage;
 import teampg199.world.board.Board;
 
 public class _TestWorldPageLoader {
+	private static final String TEST_MAP = "maps/testMap.za";
+
 	String validMapString;
 	WorldPage page;
 
@@ -40,9 +42,8 @@ public class _TestWorldPageLoader {
 		WorldPage loaded = WorldPageLoader.load(validMapString);
 		Board map = loaded.getMap();
 		Dimension mapSize = map.getInfo().getSize();
-		
-		Entity entAt00 = map.get(BoundedPos.of(0,0,map.getInfo().getSize()));
-		assertTrue(entAt00 instanceof Empty);
+
+		assertTrue(map.get(BoundedPos.of(0,0,map.getInfo().getSize())) instanceof Empty);
 		assertTrue(map.get(BoundedPos.of(1,0,mapSize)) instanceof PlayerSpawnShrine);
 		assertTrue(map.get(BoundedPos.of(2,0,mapSize)) instanceof Empty);
 		assertTrue(map.get(BoundedPos.of(3,0,mapSize)) instanceof Empty);
@@ -60,12 +61,11 @@ public class _TestWorldPageLoader {
 
 	@Test
 	public void testLoadFromFile() throws FileNotFoundException {
-		WorldPage loaded = WorldPageLoader.load(new File("testMap"));
+		WorldPage loaded = WorldPageLoader.load(new File(TEST_MAP));
 		Board map = loaded.getMap();
 		Dimension mapSize = map.getInfo().getSize();
-		
-		Entity entAt00 = map.get(BoundedPos.of(0,0,mapSize));
-		assertTrue(entAt00 instanceof Empty);
+
+		assertTrue(map.get(BoundedPos.of(0,0,mapSize)) instanceof Empty);
 		assertTrue(map.get(BoundedPos.of(1,0,mapSize)) instanceof PlayerSpawnShrine);
 		assertTrue(map.get(BoundedPos.of(2,0,mapSize)) instanceof Empty);
 		assertTrue(map.get(BoundedPos.of(3,0,mapSize)) instanceof Empty);

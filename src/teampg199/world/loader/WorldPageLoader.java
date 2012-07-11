@@ -1,10 +1,12 @@
 package teampg199.world.loader;
 
-
 import java.awt.Dimension;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+
+import com.google.common.base.Splitter;
+import com.google.common.collect.Iterables;
 
 import teampg.grid2d.point.BoundedPos;
 import teampg199.entity.Entity;
@@ -22,11 +24,13 @@ import teampg199.world.board.Board;
 import teampg199.world.board.BoardImpl;
 
 public class WorldPageLoader {
-	private static final String DELIMITER = "";
-
 	public static WorldPage load(File mapFile) throws FileNotFoundException {
-		String text = new Scanner(mapFile, "UTF-8").useDelimiter("\\A").next();
-		return load(text);
+		try (Scanner loadedMapFile = new Scanner(mapFile, "UTF-8")) {
+			loadedMapFile.useDelimiter("\\A");
+
+			String text = loadedMapFile.next();
+			return load(text);
+		}
 	}
 
 	public static WorldPage load(String mapString) {
@@ -51,32 +55,27 @@ public class WorldPageLoader {
 	}
 
 	static void loadMapEntities(String mapString, WorldPage ret) {
-		Scanner rowScanner = new Scanner(mapString);
+			int y = 0;
+			Iterable<String> allRows = Splitter.on("\n").trimResults().split(mapString);
+			for (String row : allRows) {
 
-		int y = 0;
-		while (rowScanner.hasNextLine()) {
-			String row = rowScanner.nextLine();
+				int x = 0;
+				Iterable<String> splitRow = Splitter.fixedLength(1).trimResults().split(row);
+				for (String cellSymbol : splitRow) {
+					BoundedPos cellPos = BoundedPos.of(x, y, ret.getMap().getInfo().getSize());
 
-			Scanner cellScanner = new Scanner(row);
-			cellScanner.useDelimiter(DELIMITER);
+					Entity fromCell = getEntityForSymbol(cellSymbol, ret);
+					if (fromCell instanceof Empty) {
+						x++;
+						continue;
+					}
 
-			int x = 0;
-			while (cellScanner.hasNext()) {
-				String cellSymbol = cellScanner.next();
-				BoundedPos cellPos = BoundedPos.of(x, y, ret.getMap().getInfo().getSize());
-
-				Entity fromCell = getEntityForSymbol(cellSymbol, ret);
-				if (fromCell instanceof Empty) {
+					ret.getMap().set(cellPos, fromCell);
 					x++;
-					continue;
 				}
 
-				ret.getMap().set(cellPos, fromCell);
-				x++;
+				y++;
 			}
-
-			y++;
-		}
 	}
 
 	static Entity getEntityForSymbol(String cellSymbol, WorldPage page) {
@@ -97,43 +96,31 @@ public class WorldPageLoader {
 			return new EnemySpawner(page);
 		default:
 			// TODO make our own exception: IllegalMapFileFormatException
-			throw new IllegalStateException("Couldn't read map string entry: "
-					+ cellSymbol);
+			throw new IllegalStateException("Illegal symbol in map file: " + cellSymbol);
 		}
 	}
 
 	// returns null if invalid
 	static Dimension findMapStringDimensions(String mapString) {
-		Scanner rowScanner = new Scanner(mapString);
+		try (Scanner rowScanner = new Scanner(mapString)) {
+			Iterable<String> allLines = Splitter.on("\n")
+					.omitEmptyStrings()
+					.split(mapString);
 
-		int rows = 0;
-		int colsInPreviousRows = -1;
-		while (rowScanner.hasNextLine()) {
-			String line = rowScanner.nextLine();
-			rows++;
+			int height = Iterables.size(allLines);
+			int width = allLines.iterator().next().length();
 
-			Scanner colScanner = new Scanner(line);
-			colScanner.useDelimiter(DELIMITER);
 
-			int cols = 0;
-			while (colScanner.hasNext()) {
-				colScanner.next();
-				cols++;
+			// ensure map is rectangular
+			for (String line : allLines) {
+				if (width != line.length()) {
+					// TODO make our own exception: IllegalMapFileFormatException
+					throw new IllegalStateException("Inconsistent row width; Map is not square");
+				}
 			}
 
-			if (colsInPreviousRows == -1) {
-				colsInPreviousRows = cols;
-				continue;
-			}
 
-			if (colsInPreviousRows != cols) {
-				// TODO make our own exception: IllegalMapFileFormatException
-				throw new IllegalStateException("Inconsistent row width: " + colsInPreviousRows + " " + cols + " at row #" + rows);
-			}
-
-			colsInPreviousRows = cols;
+			return new Dimension(width, height);
 		}
-
-		return new Dimension(colsInPreviousRows, rows);
 	}
 }
